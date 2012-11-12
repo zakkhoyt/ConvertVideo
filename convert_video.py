@@ -10,9 +10,16 @@
 # Param2: output directory (../output/)
 # Param3: output video size <Default|iPhone> (default it Default)
 
+# Optional parameters:
+# Param 4: -n		Print the processing commands, but do not execute
+
+# Example use for single file without action (mac)
+# python convert_video.py favorite_category/even_better_subcategory/great_video.mpg output iPhone -n
 # Example use for single file (mac)
 # python convert_video.py favorite_category/even_better_subcategory/great_video.mpg output iPhone
 
+# Example batch use. Pipe files into script without processing (mac):
+# find ../my_videos | grep ".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v" | xargs -I input_file python convert_video.py input_file out Default -n
 # Example batch use. Pipe files into script (mac):
 # find ../my_videos | grep ".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v" | xargs -I input_file python convert_video.py input_file out Default
 
@@ -80,6 +87,7 @@ if __name__ == '__main__':
 			if other_arg.find('-n') < 0:
 				convert_command = 'ffmpeg -i ' + '"' + vid_input + '"' + ' -y -f mp4 -s cif -b 128 -strict -2 -sameq ' + '"' + output_file + '"'
 
+	# Print out the command and paths
 	sys.stdout.write('--------------------------------------------\n')
 	sys.stdout.write('Platform: ' + sys.platform + '\n')
 	sys.stdout.write('new_dir: ' + new_dir + '\n')
