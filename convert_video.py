@@ -33,7 +33,7 @@ if __name__ == '__main__':
 	if len(sys.argv) == 2:
 		if vid_input.find('copy') > -1:
 			os.system('pbcopy find ../bin/compilations/ | grep ".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v" | xargs -I input_file python convert_video.py input_file out Default')
-			sys.stdout.write('exiting after copy')
+			sys.stdout.write('exiting after copy\n')
 			sys.exit(0)
 
 	if len(sys.argv) <= 3:
@@ -75,9 +75,8 @@ if __name__ == '__main__':
 		sys.exit(2)
 
 	# Only convert the file if output_file doensn't already exist
-	sys.stdout.write('Chcking if output_file exists')
 	if os.path.isfile(output_file):
-		sys.stdout.write('************** ' + output_file + ' already exists.... skipping')
+		sys.stdout.write('************** ' + output_file + ' already exists.... skipping\n')
 	else:
 		os.system('mkdir -p ' + new_dir)
 		if vid_size == 'Default':
