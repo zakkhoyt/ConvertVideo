@@ -33,8 +33,8 @@ if __name__ == '__main__':
 	if len(sys.argv) == 2:
 		if sys.argv[1].find('copy') > -1:
 			sys.stdout.write('Example batch usage:\n')
-			sys.stdout.write('find ../bin | grep ".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v" | xargs -I input_file python convert_video.py input_file out iPhone\n')
-			os.system('echo find ../bin | grep \\".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v\\" | xargs -I input_file python convert_video.py input_file out iPhone | pbcopy')
+			sys.stdout.write('find ../bin/! | grep ".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v" | xargs -I input_file python convert_video.py input_file out iPhone\n')
+			os.system('echo find ../bin/! | grep \\".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v\\" | xargs -I input_file python convert_video.py input_file out iPhone | pbcopy')
 			sys.exit(0)
 
 	if len(sys.argv) <= 3:
@@ -53,6 +53,7 @@ if __name__ == '__main__':
 
 
 	# Get the base path to the input file so we can recreate the same dir structure for output
+	vid_input = vid_input.replace('//', '/')
 	base_path = vid_input[vid_input.find('/'):len(vid_input)]	
 	base_path = base_path[0:base_path.rfind('/')]
 
@@ -63,12 +64,13 @@ if __name__ == '__main__':
 	input_file = tokens[len(tokens)-1]
 
 	# Create path to output dir
-	new_dir = vid_output_dir + base_path
+	new_dir = '"' + vid_output_dir + base_path + '"'
+	new_dir = new_dir.replace('//', '/')
 
 	# Check if we want to put example on the clipboard
 
 	# Create new file name
-	output_file = '"' + vid_output_dir + '/' + base_path + '/' + input_file + '.mp4' + '"'
+	output_file = vid_output_dir + '/' + base_path + '/' + input_file + '.mp4'
 	output_file = output_file.replace('//', '/')
 
 	if vid_size != 'Default' and vid_size != 'iPhone':
@@ -81,11 +83,9 @@ if __name__ == '__main__':
 	else:
 		os.system('mkdir -p ' + new_dir)
 		if vid_size == 'Default':
-			if other_arg.find('-n') < 0:
-				convert_command = 'ffmpeg -i ' + '"' + vid_input + '"' + ' -y -f mp4 -strict -2 -sameq ' + '"' + output_file + '"'
+			convert_command = 'ffmpeg -i ' + '"' + vid_input + '"' + ' -y -f mp4 -strict -2 -sameq ' + '"' + output_file + '"'
 		elif vid_size == 'iPhone':
-			if other_arg.find('-n') < 0:
-				convert_command = 'ffmpeg -i ' + '"' + vid_input + '"' + ' -y -f mp4 -s cif -b 128 -strict -2 -sameq ' + '"' + output_file + '"'
+			convert_command = 'ffmpeg -i ' + '"' + vid_input + '"' + ' -y -f mp4 -s cif -b 128 -strict -2 -sameq ' + '"' + output_file + '"'
 
 	# Print out the command and paths
 	sys.stdout.write('--------------------------------------------\n')
@@ -95,7 +95,8 @@ if __name__ == '__main__':
 	sys.stdout.write('Output file: ' + output_file + '\n')
 	sys.stdout.write('Converstion command: ' + convert_command + '\n')
 	sys.stdout.write('--------------------------------------------\n')
-	os.system(convert_command)
+	if other_arg.find('-n') < 0:
+		os.system(convert_command)
 
 sys.exit(0)
 
