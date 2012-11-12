@@ -14,7 +14,7 @@
 # python convert_video.py favorite_category/even_better_subcategory/great_video.mpg output iPhone
 
 # Example batch use. Pipe files into script (mac):
-# find ../bin/\! | grep ".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v" | xargs -I input_file python convert_video.py input_file out Default
+# find ../my_videos | grep ".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v" | xargs -I input_file python convert_video.py input_file out Default
 
 # TODO: Skip if exists
 # TODO: Add auto renaming
