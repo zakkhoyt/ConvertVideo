@@ -16,18 +16,13 @@
 # Example batch use. Pipe files into script (mac):
 # find ../my_videos | grep ".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v" | xargs -I input_file python convert_video.py input_file out Default
 
-# TODO: Skip if exists
 # TODO: Add auto renaming
-# TODO: Be sure to maintain aspect ratio
 # TODO: Allow different output formats
-# TODO: Some mechanism for reducing bitrate for iPhone
 
 import sys
 import os
 
 if __name__ == '__main__':
-	sys.stdout.write('there are args' + str(sys.argv))
-
 	if len(sys.argv) == 2:
 		if vid_input.find('copy') > -1:
 			os.system('pbcopy find ../bin/compilations/ | grep ".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v" | xargs -I input_file python convert_video.py input_file out Default')
@@ -48,7 +43,6 @@ if __name__ == '__main__':
 		other_arg = '';
 	convert_command = ''
 
-	sys.stdout.write('other_arg.n' + str(other_arg.find('-n')))
 
 	# Get the base path to the input file so we can recreate the same dir structure for output
 	base_path = vid_input[vid_input.find('/'):len(vid_input)]	
@@ -73,13 +67,18 @@ if __name__ == '__main__':
 		sys.stderr.write('Usage: ' + sys.argv[0] + ' <input> <output> <Defult|iPhone>\n')
 		sys.exit(2)
 
-	os.system('mkdir -p ' + new_dir)
-	if vid_size == 'Default':
-		if other_arg.find('-n') < 0:
-			convert_command = 'ffmpeg -i ' + '"' + vid_input + '"' + ' -y -f mp4 -strict -2 -sameq ' + '"' + output_file + '"'
-	elif vid_size == 'iPhone':
-		if other_arg.find('-n') < 0:
-			convert_command = 'ffmpeg -i ' + '"' + vid_input + '"' + ' -y -f mp4 -s cif -b 128 -strict -2 -sameq ' + '"' + output_file + '"'
+	# Only convert the file if output_file doensn't already exist
+	sys.stdout.write('Chcking if output_file exists')
+	if os.path.isfile(output_file):
+		sys.stdout.write('************** ' + output_file + ' already exists.... skipping')
+	else:
+		os.system('mkdir -p ' + new_dir)
+		if vid_size == 'Default':
+			if other_arg.find('-n') < 0:
+				convert_command = 'ffmpeg -i ' + '"' + vid_input + '"' + ' -y -f mp4 -strict -2 -sameq ' + '"' + output_file + '"'
+		elif vid_size == 'iPhone':
+			if other_arg.find('-n') < 0:
+				convert_command = 'ffmpeg -i ' + '"' + vid_input + '"' + ' -y -f mp4 -s cif -b 128 -strict -2 -sameq ' + '"' + output_file + '"'
 
 	sys.stdout.write('--------------------------------------------\n')
 	sys.stdout.write('Platform: ' + sys.platform + '\n')
