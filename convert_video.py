@@ -34,6 +34,7 @@ if __name__ == '__main__':
 		if sys.argv[1].find('copy') > -1:
 			sys.stdout.write('Example batch usage:\n')
 			sys.stdout.write('find ../bin | grep ".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v" | xargs -I input_file python convert_video.py input_file out iPhone\n')
+			os.system('echo find ../bin | grep \\".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v\\" | xargs -I input_file python convert_video.py input_file out iPhone | pbcopy')
 			sys.exit(0)
 
 	if len(sys.argv) <= 3:
