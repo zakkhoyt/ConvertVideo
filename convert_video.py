@@ -31,9 +31,9 @@ import os
 
 if __name__ == '__main__':
 	if len(sys.argv) == 2:
-		if vid_input.find('copy') > -1:
-			os.system('pbcopy find ../bin/compilations/ | grep ".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v" | xargs -I input_file python convert_video.py input_file out Default')
-			sys.stdout.write('exiting after copy\n')
+		if sys.argv[1].find('copy') > -1:
+			sys.stdout.write('Example batch usage:\n')
+			sys.stdout.write('find ../bin | grep ".flv\|.avi\|.mpg\|.wmv\|.mpeg\|.m4v" | xargs -I input_file python convert_video.py input_file out iPhone\n')
 			sys.exit(0)
 
 	if len(sys.argv) <= 3:
@@ -67,7 +67,7 @@ if __name__ == '__main__':
 	# Check if we want to put example on the clipboard
 
 	# Create new file name
-	output_file = vid_output_dir + '/' + base_path + '/' + input_file + '.mp4'
+	output_file = '"' + vid_output_dir + '/' + base_path + '/' + input_file + '.mp4' + '"'
 	output_file = output_file.replace('//', '/')
 
 	if vid_size != 'Default' and vid_size != 'iPhone':
